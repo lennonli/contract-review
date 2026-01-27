@@ -1,404 +1,326 @@
 # Common Contract Clauses and Legal Implications
+# 常用合同条款及法律含义
 
-This reference provides standard contract clauses and explains their legal significance, common variations, and potential issues.
+本文档提供标准合同条款参考，解释其法律意义、常见变体和潜在问题。
+
+---
 
 ## 1. Entire Agreement Clause (完整协议条款)
 
-### Standard Form
+### Standard Form / 标准形式
 ```
+本协议构成双方就本协议标的事项达成的完整协议，取代双方此前就该事项达成的所有口头或书面协议、谅解、谈判和讨论。
+
 This Agreement constitutes the entire agreement between the parties with respect to the subject matter hereof and supersedes all prior and contemporaneous agreements, understandings, negotiations and discussions, whether oral or written, of the parties.
 ```
 
-### Chinese Version
-```
-本协议构成双方就本协议标的事项达成的完整协议，取代双方此前就该事项达成的所有口头或书面协议、谅解、谈判和讨论。
-```
+### Purpose / 目的
+- 防止当事人依赖合同外的先前陈述或协议
+- 确立书面合同为双方义务的最终依据
+- 防止基于合同前陈述的索赔
 
-### Purpose
-- Prevents parties from relying on prior statements or agreements not in the written contract
-- Establishes the written contract as the definitive source of the parties' obligations
-- Protects against claims based on pre-contractual representations
-
-### Key Issues to Check
-- Does it exclude important side letters or annexed documents?
-- Is there an exception for fraud or fraudulent misrepresentation?
-- Are there related agreements that should be referenced?
+### Key Issues to Check / 检查要点
+- [ ] 是否排除了重要的补充协议或附件？
+- [ ] 是否有欺诈或欺诈性陈述的例外？
+- [ ] 是否有应当引用的关联协议？
 
 ---
 
 ## 2. Amendment Clause (修改条款)
 
-### Standard Form
+### Standard Form / 标准形式
 ```
+除非经各方签署书面文件，本协议不得修改、变更或补充。
+
 This Agreement may not be amended, modified or supplemented except by a written instrument signed by all parties hereto.
 ```
 
-### Chinese Version
-```
-除非经各方签署书面文件，本协议不得修改、变更或补充。
-```
-
-### Purpose
-- Prevents informal or oral modifications
-- Requires deliberate process for changes
-- Provides certainty about contract terms
-
-### Variations
-- Email amendments permitted
-- Board approval required for amendments
-- Specific procedures for different types of amendments
+### Variations / 变体
+- 允许通过电子邮件修改
+- 需要董事会批准
+- 不同类型修改需要不同程序
 
 ---
 
 ## 3. Assignment Clause (转让条款)
 
-### Standard Form - Prohibition
+### Standard Form - Prohibition / 禁止转让
 ```
+未经另一方事先书面同意，任一方不得转让本协议或本协议项下的任何权利或义务，未经同意的转让无效。
+
 Neither party may assign or transfer this Agreement or any rights or obligations hereunder without the prior written consent of the other party, and any purported assignment without such consent shall be void.
 ```
 
-### Standard Form - Permitted Assignment
+### Standard Form - Permitted Assignment / 允许转让
 ```
-Neither party may assign this Agreement without the prior written consent of the other party, except that either party may assign this Agreement to (a) an affiliate, or (b) a successor in connection with a merger, acquisition or sale of all or substantially all of its assets or business, provided that the assignee assumes all obligations under this Agreement.
-```
-
-### Chinese Version
-```
-未经另一方事先书面同意，任一方不得转让本协议或本协议项下的任何权利或义务，未经同意的转让无效。
+未经另一方事先书面同意，任一方不得转让本协议，但以下情形除外：(a) 转让给关联方；(b) 因合并、收购或出售全部或主要资产而转让给继受方，前提是受让方承担本协议项下的全部义务。
 ```
 
-### Key Considerations
-- Change of control as deemed assignment
-- Permitted assignments to affiliates
-- Requirements for assignee to assume obligations
-- Whether consent can be unreasonably withheld
+### Key Considerations / 关键考量
+- [ ] 控制权变更是否视为转让
+- [ ] 是否允许转让给关联方
+- [ ] 受让方是否需要承担全部义务
+- [ ] 同意是否可以无理由拒绝
 
 ---
 
 ## 4. Severability Clause (可分割性条款)
 
-### Standard Form
+### Standard Form / 标准形式
 ```
-If any provision of this Agreement is held to be invalid, illegal or unenforceable, the validity, legality and enforceability of the remaining provisions shall not be affected or impaired thereby. The parties shall negotiate in good faith to replace any invalid, illegal or unenforceable provision with a valid provision that achieves, to the greatest extent possible, the economic, business and other purposes of such invalid, illegal or unenforceable provision.
+如本协议任何条款被认定无效、违法或不可执行，其余条款的效力、合法性和可执行性不受影响。双方应善意协商，以有效条款替代无效条款，在最大程度上实现该无效条款的经济、商业及其他目的。
 ```
-
-### Purpose
-- Preserves remainder of contract if one provision is invalid
-- Demonstrates intent that contract should survive partial invalidity
-- Provides mechanism for replacing invalid provisions
 
 ---
 
 ## 5. Force Majeure Clause (不可抗力条款)
 
-### Standard Form
+### Standard Form (PRC Law Aligned) / 标准形式（符合中国法）
 ```
-Neither party shall be liable for any failure or delay in performing its obligations under this Agreement to the extent that such failure or delay is caused by Force Majeure. "Force Majeure" means any event beyond the reasonable control of a party, including but not limited to acts of God, war, terrorism, riots, embargoes, acts of civil or military authorities, fire, floods, earthquakes, accidents, strikes, or shortages of transportation, facilities, fuel, energy, labor or materials.
+因不可抗力不能履行合同的，根据不可抗力的影响，部分或者全部免除责任。不可抗力是指不能预见、不能避免并不能克服的客观情况，包括但不限于：
+
+(a) 自然灾害：地震、洪水、台风、火灾等；
+(b) 社会事件：战争、暴乱、罢工等；
+(c) 政府行为：法律法规变更、政府禁令、征收征用等；
+(d) 公共卫生事件：流行病、传染病等。
+
+受不可抗力影响的一方应在[X]日内书面通知另一方，并提供相关证明文件。
 ```
 
-### Chinese Version (Aligned with PRC Contract Law)
-```
-因不可抗力不能履行合同的，根据不可抗力的影响，部分或者全部免除责任。不可抗力是指不能预见、不能避免并不能克服的客观情况，包括但不限于自然灾害、政府行为、战争等。
-```
+### Key Elements under Chinese Law / 中国法要素
+根据《民法典》第180条、第590条：
+- **不能预见** - 订立合同时无法合理预见
+- **不能避免** - 无法采取措施避免
+- **不能克服** - 无法克服其影响
 
-### Key Elements under Chinese Law
-- Unforeseeable (不能预见)
-- Unavoidable (不能避免)
-- Insurmountable (不能克服)
-
-### Important Provisions
-- Notice requirements (must notify other party promptly)
-- Proof requirements (often need official documentation)
-- Mitigation obligations
-- Right to terminate if force majeure continues
-- Partial vs. full excuse from performance
-
-### Recent Developments
-- COVID-19 and pandemic considerations
-- Government lockdowns and restrictions
-- Supply chain disruptions
+### Important Provisions / 重要规定
+- [ ] 通知义务（必须及时通知对方）
+- [ ] 证明要求（通常需要官方证明）
+- [ ] 减损义务
+- [ ] 持续不可抗力时的解除权
+- [ ] 部分免责 vs 全部免责
 
 ---
 
 ## 6. Limitation of Liability (责任限制条款)
 
-### Standard Form
+### Standard Form / 标准形式
 ```
-EXCEPT FOR [EXCLUDED LIABILITIES], IN NO EVENT SHALL EITHER PARTY'S TOTAL LIABILITY ARISING OUT OF OR RELATED TO THIS AGREEMENT EXCEED [CAP AMOUNT/MULTIPLIER]. 
+除[排除事项]外，任何一方因本协议产生的责任总额不得超过[金额/倍数]。
 
-IN NO EVENT SHALL EITHER PARTY BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, LOSS OF REVENUE, LOSS OF DATA, OR LOSS OF BUSINESS OPPORTUNITY, WHETHER IN CONTRACT, TORT OR OTHERWISE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+任何一方均不对另一方承担任何间接损失、附带损失、特殊损失或惩罚性赔偿，包括但不限于利润损失、收入损失、数据丢失或商业机会损失，无论是否已被告知该等损失的可能性。
 ```
 
-### Common Exclusions from Limitation
-- Breach of confidentiality
-- Intellectual property infringement
-- Indemnification obligations
-- Fraud or willful misconduct
-- Gross negligence
-- Payment obligations
+### Common Exclusions from Limitation / 常见例外
+- 违反保密义务
+- 侵犯知识产权
+- 赔偿义务
+- 欺诈或故意不当行为
+- 重大过失
+- 付款义务
 
-### Common Cap Structures
-- Fixed amount (e.g., RMB 1,000,000)
-- Multiple of fees paid (e.g., 12 months of fees)
-- Amount paid in prior year
-- Insurance coverage amount
-
-### Key Considerations
-- Balance between parties
-- Nature of transaction and risks
-- Insurance availability
-- Industry standards
+### Common Cap Structures / 常见责任上限
+| 结构 | 示例 |
+|------|------|
+| 固定金额 | 人民币100万元 |
+| 费用倍数 | 已付费用的1-2倍 |
+| 年度费用 | 过去12个月费用 |
+| 保险金额 | 保险覆盖额度 |
 
 ---
 
 ## 7. Indemnification Clause (赔偿条款)
 
-### Standard Form - Mutual Indemnification
+### Standard Form - Mutual / 双向赔偿
 ```
-Each party (the "Indemnifying Party") shall indemnify, defend and hold harmless the other party and its officers, directors, employees and agents (collectively, "Indemnified Parties") from and against any and all losses, damages, liabilities, costs and expenses (including reasonable attorneys' fees) arising out of or resulting from:
+各方（"赔偿方"）应赔偿另一方及其管理人员、董事、员工和代理人（统称"被赔偿方"）因以下事项产生的所有损失、损害、责任、费用和开支（包括合理的律师费）：
 
-(a) any breach of this Agreement by the Indemnifying Party;
-(b) any negligence or willful misconduct of the Indemnifying Party; or
-(c) [other specified matters].
-```
-
-### Third-Party Indemnification
-```
-[Company] shall indemnify and hold harmless [Customer] from and against any third-party claims alleging that [Product/Service] infringes any intellectual property rights of such third party.
+(a) 赔偿方违反本协议；
+(b) 赔偿方的过失或故意不当行为；
+(c) [其他特定事项]。
 ```
 
-### Indemnification Procedures
-Key elements to include:
-- Notice requirements (prompt written notice)
-- Control of defense (who controls litigation)
-- Cooperation obligations
-- Settlement consent requirements
-- Right to participate in defense
+### Indemnification Procedures / 赔偿程序
+- [ ] 通知要求（及时书面通知）
+- [ ] 抗辩控制权（谁控制诉讼）
+- [ ] 配合义务
+- [ ] 和解同意要求
+- [ ] 参与抗辩的权利
 
-### Chinese Law Considerations
-- Indemnification not a traditional Chinese legal concept
-- May be interpreted as damages/compensation (损害赔偿)
-- Clear drafting essential for enforceability
-- Consider arbitration for disputes
+### Chinese Law Considerations / 中国法注意事项
+> ⚠️ "赔偿"(Indemnification)不是传统中国法律概念，可能被解释为损害赔偿。为确保可执行性，需要明确的条款起草，并考虑选择仲裁解决争议。
 
 ---
 
 ## 8. Confidentiality Clause (保密条款)
 
-### Standard Form
+### Standard Form / 标准形式
 ```
-Each party agrees to maintain in confidence all Confidential Information of the other party and to use such Confidential Information only for purposes of performing its obligations under this Agreement. 
+各方同意对另一方的保密信息予以保密，仅将该等保密信息用于履行本协议项下义务。
 
-"Confidential Information" means all information disclosed by one party to the other, whether orally, in writing, or by any other means, that is designated as confidential or that reasonably should be understood to be confidential given the nature of the information and the circumstances of disclosure.
+"保密信息"是指一方向另一方披露的所有被标注为保密的信息，或根据信息性质及披露情况合理应当理解为保密的信息，无论以口头、书面或其他任何方式披露。
 
-Confidential Information does not include information that:
-(a) is or becomes publicly available through no breach of this Agreement;
-(b) was rightfully known by the receiving party prior to disclosure;
-(c) is rightfully obtained by the receiving party from a third party without breach of any confidentiality obligation; or
-(d) is independently developed by the receiving party without use of or reference to the Confidential Information.
+以下信息不属于保密信息：
+(a) 非因接收方违约而公开的信息；
+(b) 接收方在披露前已合法知悉的信息；
+(c) 接收方从无保密义务的第三方合法获得的信息；
+(d) 接收方独立开发且未使用或参考保密信息的信息。
 ```
 
-### Standard of Care
-Options:
-- Same degree of care as for own confidential information
-- Reasonable care
-- Strict confidentiality
+### Standard of Care / 注意标准
+| 标准 | 描述 |
+|------|------|
+| 同等保护 | 与保护自身保密信息相同程度 |
+| 合理注意 | 合理的保密措施 |
+| 严格保密 | 最高程度的保密措施 |
 
-### Duration
-- During term and for [X] years after termination
-- Common periods: 2-5 years
-- Trade secrets: indefinite
+### Duration / 期限
+- 合同期间及终止后[X]年
+- 常见期限：2-5年
+- 商业秘密：无期限
 
 ---
 
-## 9. Dispute Resolution Clauses
+## 9. Dispute Resolution Clauses (争议解决条款)
 
 ### A. Arbitration Clause (仲裁条款)
 
-#### CIETAC (China International Economic and Trade Arbitration Commission)
+#### CIETAC / 中国国际经济贸易仲裁委员会
 ```
-Any dispute arising from or in connection with this Agreement shall be submitted to China International Economic and Trade Arbitration Commission (CIETAC) for arbitration which shall be conducted in accordance with CIETAC's arbitration rules in effect at the time of applying for arbitration. The arbitral award is final and binding upon both parties.
+凡因本协议引起的或与本协议有关的任何争议，均应提交中国国际经济贸易仲裁委员会，按照申请仲裁时现行有效的仲裁规则进行仲裁。仲裁裁决是终局的，对双方均有约束力。
 
-Arbitration location: [Beijing/Shanghai/Shenzhen]
-Language: [Chinese/English]
-Number of arbitrators: [One/Three]
+仲裁地点：[北京/上海/深圳]
+仲裁语言：[中文/英文]
+仲裁员人数：[一名/三名]
 ```
 
-#### International Arbitration (ICC, HKIAC, SIAC)
+#### International Arbitration / 国际仲裁
 ```
-Any dispute arising out of or in connection with this Agreement shall be finally settled under the Rules of Arbitration of the International Chamber of Commerce by [one/three] arbitrator(s) appointed in accordance with the said Rules.
+Any dispute arising out of or in connection with this Agreement shall be finally settled under the Rules of Arbitration of [ICC/HKIAC/SIAC] by [one/three] arbitrator(s) appointed in accordance with the said Rules.
 
-Seat of arbitration: [Hong Kong/Singapore/London]
+Seat of arbitration: [Hong Kong/Singapore]
 Language: [English/Chinese]
-Governing law: [Specify]
 ```
 
-### B. Litigation/Jurisdiction Clause (管辖条款)
-
+### B. Litigation/Jurisdiction Clause (诉讼/管辖条款)
 ```
-The parties irrevocably submit to the exclusive jurisdiction of the courts of [location] for the resolution of any disputes arising out of or relating to this Agreement.
+双方不可撤销地接受[地点]法院对因本协议产生或与本协议相关的任何争议的专属管辖。
 ```
 
 ### C. Governing Law Clause (准据法条款)
-
 ```
-This Agreement shall be governed by and construed in accordance with the laws of the People's Republic of China [excluding its conflicts of law principles].
+本协议受中华人民共和国法律管辖并依其解释[不包括其冲突法规则]。
 ```
-
-### Key Considerations
-- International vs. domestic dispute
-- Enforceability in relevant jurisdictions
-- Cost and timing considerations
-- Confidentiality requirements
-- Appeal rights
 
 ---
 
 ## 10. Termination Clauses (终止条款)
 
-### Term and Renewal
+### Term and Renewal / 期限与续期
 ```
-This Agreement shall commence on [Start Date] and continue for an initial term of [X] years (the "Initial Term"). Unless either party provides written notice of non-renewal at least [90] days prior to the end of the Initial Term, this Agreement shall automatically renew for successive [one-year] periods (each a "Renewal Term").
-```
-
-### Termination for Convenience
-```
-Either party may terminate this Agreement for any reason or no reason upon [90] days' prior written notice to the other party.
+本协议自[起始日期]起生效，初始期限为[X]年（"初始期限"）。除非任一方在初始期限届满前至少[90]日书面通知不续期，本协议将自动续期[一年]（每个续期期限称"续期期限"）。
 ```
 
-### Termination for Cause
+### Termination for Convenience / 便利终止
 ```
-Either party may terminate this Agreement immediately upon written notice if:
-
-(a) the other party commits a material breach of this Agreement and fails to cure such breach within [30] days after written notice thereof;
-(b) the other party becomes insolvent, makes an assignment for the benefit of creditors, or enters into bankruptcy proceedings; or
-(c) [other specified events].
+任一方可提前[90]日书面通知另一方，无需理由终止本协议。
 ```
 
-### Effect of Termination
+### Termination for Cause / 因故终止
 ```
-Upon termination or expiration of this Agreement:
+如发生以下情形，任一方可立即书面通知终止本协议：
 
-(a) All rights and licenses granted hereunder shall immediately cease;
-(b) Each party shall return or destroy all Confidential Information of the other party;
-(c) All payment obligations accrued prior to termination shall survive;
-(d) [Other survival provisions as specified in Section X].
+(a) 另一方实质性违反本协议，且在收到书面通知后[30]日内未能补救；
+(b) 另一方资不抵债、为债权人利益进行财产转让或进入破产程序；
+(c) [其他特定事件]。
 ```
 
-### Survival Clause
+### Effect of Termination / 终止后果
 ```
-The following provisions shall survive termination or expiration of this Agreement: [list specific sections such as confidentiality, IP ownership, limitation of liability, indemnification, dispute resolution].
+本协议终止或届满后：
+
+(a) 本协议项下授予的所有权利和许可立即终止；
+(b) 各方应返还或销毁另一方的保密信息；
+(c) 终止前产生的所有付款义务继续有效；
+(d) [第X条规定的其他存续条款]继续有效。
+```
+
+### Survival Clause / 存续条款
+```
+以下条款在本协议终止或届满后继续有效：[保密、知识产权归属、责任限制、赔偿、争议解决等具体条款]。
 ```
 
 ---
 
-## 11. Representations and Warranties Standard Clauses
+## 11. Representations and Warranties (陈述与保证)
 
-### Corporate Status and Authority
+### Corporate Status and Authority / 公司地位与授权
 ```
-Each party represents and warrants that:
-(a) it is duly organized, validly existing and in good standing under the laws of its jurisdiction;
-(b) it has full corporate power and authority to enter into this Agreement and perform its obligations hereunder;
-(c) this Agreement has been duly authorized, executed and delivered and constitutes a legal, valid and binding obligation; and
-(d) its execution and performance of this Agreement does not violate any law, regulation or agreement to which it is subject.
-```
-
-### No Conflicts
-```
-The execution, delivery and performance of this Agreement does not and will not:
-(a) violate any law, rule, regulation or order applicable to the party;
-(b) conflict with or result in a breach of any provision of the party's organizational documents;
-(c) require any consent, approval or authorization that has not been obtained; or
-(d) result in a breach or default under any agreement to which the party is bound.
+各方陈述并保证：
+(a) 其依照其注册地法律有效设立并存续；
+(b) 其具有签订本协议并履行本协议项下义务的完全公司权力和授权；
+(c) 本协议已获正式授权、签署和交付，构成合法、有效且有约束力的义务；
+(d) 其签署和履行本协议不违反任何适用于其的法律、法规或协议。
 ```
 
 ---
 
 ## 12. Notice Provisions (通知条款)
 
-### Standard Form
+### Standard Form / 标准形式
 ```
-All notices, requests, demands and other communications under this Agreement shall be in writing and shall be deemed to have been duly given:
+本协议项下的所有通知、请求、要求和其他通信应以书面形式发出，并视为已正式发出：
 
-(a) when delivered personally;
-(b) on the business day after deposit with an internationally recognized overnight courier service;
-(c) on the [third] business day after being sent by registered or certified mail, return receipt requested; or
-(d) upon confirmation of receipt when sent by email to the addresses specified below (or to such other address as a party may designate by notice).
+(a) 当面送达时；
+(b) 交由国际知名快递公司后的次一个工作日；
+(c) 以挂号信或特快专递寄出后的第[三]个工作日；
+(d) 通过电子邮件发送至以下地址并收到确认时。
 
-For [Party A]:
-[Name]
-[Address]
-Attention: [Contact Person]
-Email: [Email]
+甲方：
+[名称]
+[地址]
+联系人：[联系人]
+电子邮件：[邮箱]
 
-For [Party B]:
-[Name]
-[Address]
-Attention: [Contact Person]
-Email: [Email]
-```
-
-### Key Elements
-- Acceptable methods of delivery
-- When notice is deemed received
-- Required recipients
-- Process for changing notice details
-
----
-
-## 13. Good Faith and Fair Dealing
-
-### Explicit Good Faith Clause
-```
-The parties agree to perform their obligations under this Agreement in good faith and to cooperate with each other to achieve the purposes of this Agreement.
-```
-
-### Chinese Law Context
-Article 6 of PRC Contract Law: "Parties shall abide by the principle of good faith in exercising their rights and performing their obligations."
-
-This is a mandatory principle in Chinese contract law, even if not explicitly stated.
-
----
-
-## 14. Language Clause (语言条款)
-
-### For Bilingual Contracts
-```
-This Agreement is executed in both Chinese and English languages. Both versions shall have equal legal effect. In the event of any inconsistency between the Chinese and English versions, the [Chinese/English] version shall prevail.
-```
-
-### Alternative - Both Equally Binding
-```
-This Agreement is executed in both Chinese and English. Both language versions are equally authentic. In case of any discrepancy, the parties shall negotiate in good faith to resolve such discrepancy in a manner consistent with the intent of the Agreement.
+乙方：
+[名称]
+[地址]
+联系人：[联系人]
+电子邮件：[邮箱]
 ```
 
 ---
 
-## 15. Counterparts and Execution
+## 13. Language Clause (语言条款)
 
+### For Bilingual Contracts / 双语合同
 ```
-This Agreement may be executed in any number of counterparts, each of which when executed and delivered shall constitute an original, but all of which together shall constitute one and the same instrument. Delivery of an executed counterpart of this Agreement by facsimile or electronic transmission (including PDF) shall be as effective as delivery of a manually executed original.
+本协议以中文和英文两种语言签署，两种语言版本具有同等法律效力。如中英文版本存在不一致之处，以[中文/英文]版本为准。
 ```
 
 ---
 
-## Risk Assessment Notes
+## Risk Assessment Notes / 风险评估提示
 
-### High-Risk Clause Combinations
-⚠️ **Watch for:**
-- One-sided limitation of liability
-- Broad indemnification without caps
-- Automatic renewal with short notice period
-- Unilateral amendment rights
-- Broad confidentiality without time limits
-- Assignment allowed only for one party
-- One-sided termination for convenience
+### High-Risk Clause Combinations / 高风险条款组合
+⚠️ **警惕以下情况：**
+- 单方责任限制
+- 无上限的宽泛赔偿
+- 短通知期的自动续期
+- 单方修改权
+- 无期限的宽泛保密义务
+- 仅允许一方转让
+- 单方便利终止权
 
-### Balanced Risk Allocation Indicators
-✅ **Look for:**
-- Mutual indemnification provisions
-- Reasonable liability caps for both parties
-- Clear termination rights for both parties
-- Standard confidentiality exclusions
-- Reasonable notice periods for key actions
-- Balanced IP ownership provisions
+### Balanced Risk Allocation Indicators / 均衡风险分配指标
+✅ **寻找以下特征：**
+- 双向赔偿条款
+- 双方合理的责任上限
+- 双方均有明确的终止权
+- 标准保密例外
+- 重要行动的合理通知期
+- 均衡的知识产权归属
+
+---
+
+*最后更新 / Last Updated: 2026-01-27*

@@ -1,43 +1,39 @@
 #!/usr/bin/env python3
 """
-Extract key information from contract documents.
+Enhanced Contract Information Extractor
 
-This script extracts essential contract information including parties, dates,
-key terms, and creates a structured summary.
+Extracts key information from contract documents including parties, dates,
+key terms, contract type identification, and creates a structured summary.
 
 Usage:
-    python extract_contract_info.py <contract_file_path>
+    python extract_contract_info.py <contract_file_path> [--output json|text|md]
 """
 
 import sys
 import os
 from pathlib import Path
 import re
+import json
 from datetime import datetime
 
 
-def extract_contract_info(file_path):
-    """
-    Extract key information from a contract document.
-    
-    Args:
-        file_path: Path to the contract file (.txt, .docx, or .pdf)
-    
-    Returns:
-        Dictionary containing extracted contract information
-    """
-    
+def extract_text(file_path):
+    """Extract text from various file formats."""
     file_ext = Path(file_path).suffix.lower()
-    
-    # Read contract text based on file type
+
     if file_ext == '.txt':
         with open(file_path, 'r', encoding='utf-8') as f:
-            text = f.read()
+            return f.read()
     elif file_ext == '.docx':
         try:
             from docx import Document
             doc = Document(file_path)
             text = '\n'.join([para.text for para in doc.paragraphs])
+            # Also read tables
+            for table in doc.tables:
+                for row in table.rows:
+                    text += '\n' + ' | '.join([cell.text for cell in row.cells])
+            return text
         except ImportError:
             print("Error: python-docx not installed. Install with: pip install python-docx")
             sys.exit(1)
@@ -49,39 +45,106 @@ def extract_contract_info(file_path):
                 text = ''
                 for page in reader.pages:
                     text += page.extract_text()
+            return text
         except ImportError:
             print("Error: PyPDF2 not installed. Install with: pip install PyPDF2")
             sys.exit(1)
     else:
-        print(f"Error: Unsupported file type {file_ext}")
-        sys.exit(1)
-    
-    # Extract information
-    info = {
-        'file_name': Path(file_path).name,
-        'file_path': file_path,
-        'extraction_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'contract_title': extract_title(text),
-        'parties': extract_parties(text),
-        'dates': extract_dates(text),
-        'governing_law': extract_governing_law(text),
-        'key_amounts': extract_amounts(text),
-        'contract_type': identify_contract_type(text),
-        'key_sections': extract_key_sections(text)
+        raise ValueError(f"Unsupported file type: {file_ext}")
+
+
+# Contract type definitions with keywords
+CONTRACT_TYPES = {
+    'equity_shareholder': {
+        'name_cn': '股权/股东协议',
+        'name_en': 'Equity/Shareholder Agreement',
+        'keywords': ['股东协议', '股权协议', '股权转让', 'Shareholder Agreement', 'Share Transfer', '股东会', '董事会席位'],
+        'checklist': 'equity_shareholder.md'
+    },
+    'investment': {
+        'name_cn': '投资协议',
+        'name_en': 'Investment Agreement',
+        'keywords': ['投资协议', '融资协议', 'Investment Agreement', '增资', '估值', 'Valuation', '优先股', 'Series A', 'Series B'],
+        'checklist': 'investment.md'
+    },
+    'employment': {
+        'name_cn': '劳动合同',
+        'name_en': 'Employment Contract',
+        'keywords': ['劳动合同', '雇佣协议', 'Employment', '试用期', '工资', '社会保险', '竞业限制', 'Probation'],
+        'checklist': 'employment.md'
+    },
+    'lease': {
+        'name_cn': '租赁协议',
+        'name_en': 'Lease Agreement',
+        'keywords': ['租赁协议', '租赁合同', '房屋租赁', 'Lease Agreement', '租金', '押金', '承租方', '出租方'],
+        'checklist': 'lease.md'
+    },
+    'service': {
+        'name_cn': '服务/咨询协议',
+        'name_en': 'Service/Consulting Agreement',
+        'keywords': ['服务协议', '咨询协议', 'Service Agreement', 'Consulting', '服务费', '交付物', 'Deliverables'],
+        'checklist': 'service.md'
+    },
+    'sales_purchase': {
+        'name_cn': '买卖/采购合同',
+        'name_en': 'Sales/Purchase Contract',
+        'keywords': ['买卖合同', '采购合同', '购销合同', 'Sales Contract', 'Purchase Agreement', '货物', '交付', '验收'],
+        'checklist': 'sales_purchase.md'
+    },
+    'nda': {
+        'name_cn': '保密协议',
+        'name_en': 'Non-Disclosure Agreement',
+        'keywords': ['保密协议', 'NDA', 'Non-Disclosure', 'Confidentiality Agreement', '保密信息', 'Confidential Information'],
+        'checklist': 'nda.md'
+    },
+    'loan': {
+        'name_cn': '借款协议',
+        'name_en': 'Loan Agreement',
+        'keywords': ['借款协议', '贷款合同', 'Loan Agreement', '借款人', '贷款人', '利率', '还款'],
+        'checklist': 'loan.md'
+    },
+    'ip_license': {
+        'name_cn': '知识产权许可协议',
+        'name_en': 'IP License Agreement',
+        'keywords': ['许可协议', '授权协议', 'License Agreement', '知识产权', '专利', '商标', '著作权', 'Royalty'],
+        'checklist': 'ip_license.md'
+    },
+    'partnership': {
+        'name_cn': '合作/合资协议',
+        'name_en': 'Partnership/JV Agreement',
+        'keywords': ['合作协议', '合资协议', 'Partnership', 'Joint Venture', '合资公司', '合作方'],
+        'checklist': 'partnership_jv.md'
     }
-    
-    return info
+}
+
+
+def identify_contract_type(text):
+    """Identify contract type based on keywords."""
+    text_lower = text.lower()
+    scores = {}
+
+    for type_key, type_info in CONTRACT_TYPES.items():
+        score = 0
+        for keyword in type_info['keywords']:
+            if keyword.lower() in text_lower:
+                score += 1
+        if score > 0:
+            scores[type_key] = score
+
+    if scores:
+        best_match = max(scores, key=scores.get)
+        return CONTRACT_TYPES[best_match]
+
+    return {'name_cn': '未分类', 'name_en': 'Unclassified', 'checklist': None}
 
 
 def extract_title(text):
-    """Extract contract title from the first few lines."""
+    """Extract contract title."""
     lines = text.strip().split('\n')
-    # Usually contract title is in the first 5 lines
-    for line in lines[:5]:
+    for line in lines[:10]:
         line = line.strip()
-        if len(line) > 10 and len(line) < 100:  # Reasonable title length
-            # Remove common prefixes
-            if any(keyword in line for keyword in ['协议', '合同', 'Agreement', 'Contract']):
+        if 10 < len(line) < 100:
+            if any(kw in line for kw in ['协议', '合同', 'Agreement', 'Contract']):
                 return line
     return "Unknown"
 
@@ -89,247 +152,245 @@ def extract_title(text):
 def extract_parties(text):
     """Extract contracting parties."""
     parties = []
-    
-    # Chinese patterns
-    cn_patterns = [
-        r'甲方[：:]\s*([^\n）)]+)',
-        r'乙方[：:]\s*([^\n）)]+)',
-        r'丙方[：:]\s*([^\n）)]+)',
-        r'投资方[：:]\s*([^\n）)]+)',
-        r'目标公司[：:]\s*([^\n）)]+)',
+
+    patterns = [
+        r'甲方[（(]?[^）)]*[）)]?[：:]\s*([^\n（）()]+)',
+        r'乙方[（(]?[^）)]*[）)]?[：:]\s*([^\n（）()]+)',
+        r'丙方[（(]?[^）)]*[）)]?[：:]\s*([^\n（）()]+)',
+        r'投资方[：:]\s*([^\n]+)',
+        r'目标公司[：:]\s*([^\n]+)',
+        r'出租方[：:]\s*([^\n]+)',
+        r'承租方[：:]\s*([^\n]+)',
+        r'服务方[：:]\s*([^\n]+)',
+        r'委托方[：:]\s*([^\n]+)',
+        r'Party A[:\s]+([^\n]+?)(?=\(|Party|$)',
+        r'Party B[:\s]+([^\n]+?)(?=\(|Party|$)',
     ]
-    
-    # English patterns
-    en_patterns = [
-        r'Party A[:\s]+([^\n]+?)(?=\(|$)',
-        r'Party B[:\s]+([^\n]+?)(?=\(|$)',
-        r'between\s+([^"and]+?)\s+and\s+([^\n]+)',
-    ]
-    
-    for pattern in cn_patterns + en_patterns:
+
+    for pattern in patterns:
         matches = re.findall(pattern, text, re.IGNORECASE)
         for match in matches:
-            if isinstance(match, tuple):
-                parties.extend([m.strip() for m in match if m.strip()])
-            else:
-                parties.append(match.strip())
-    
-    # Remove duplicates while preserving order
-    seen = set()
-    unique_parties = []
-    for party in parties:
-        if party not in seen and len(party) > 2:
-            seen.add(party)
-            unique_parties.append(party)
-    
-    return unique_parties[:10]  # Limit to first 10
+            clean = match.strip().strip('：:').strip()
+            if clean and len(clean) > 2 and clean not in parties:
+                parties.append(clean)
+
+    return parties[:10]
 
 
 def extract_dates(text):
-    """Extract important dates from contract."""
+    """Extract important dates."""
     dates = {}
-    
-    # Execution date patterns
-    execution_patterns = [
-        r'签署日期[：:]\s*(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日',
-        r'签订日期[：:]\s*(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日',
-        r'Date[:\s]+([A-Z][a-z]+\s+\d{1,2},\s*\d{4})',
-        r'Dated[:\s]+([A-Z][a-z]+\s+\d{1,2},\s*\d{4})',
-        r'(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日',
-    ]
-    
-    for pattern in execution_patterns:
-        match = re.search(pattern, text)
-        if match:
-            dates['execution_date'] = match.group(0)
-            break
-    
-    # Effective date
-    effective_patterns = [
-        r'生效日期[：:]\s*([^\n]+)',
-        r'Effective\s+Date[:\s]+([^\n]+)',
-    ]
-    
-    for pattern in effective_patterns:
-        match = re.search(pattern, text, re.IGNORECASE)
-        if match:
-            dates['effective_date'] = match.group(1).strip()
-            break
-    
+
+    # Chinese date patterns
+    cn_date = re.search(r'(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日', text)
+    if cn_date:
+        dates['签署日期'] = f"{cn_date.group(1)}年{cn_date.group(2)}月{cn_date.group(3)}日"
+
+    # English date patterns
+    en_date = re.search(r'Date[d]?[:\s]+([A-Z][a-z]+\s+\d{1,2},?\s*\d{4})', text, re.IGNORECASE)
+    if en_date:
+        dates['execution_date'] = en_date.group(1)
+
     # Term/Duration
-    term_patterns = [
-        r'期限[：:]\s*([^\n]+)',
-        r'Term[:\s]+([^\n]+)',
-        r'有效期[：:]\s*([^\n]+)',
-    ]
-    
-    for pattern in term_patterns:
-        match = re.search(pattern, text, re.IGNORECASE)
-        if match:
-            dates['term'] = match.group(1).strip()
-            break
-    
+    term = re.search(r'(?:期限|Term)[：:]\s*([^\n]+)', text, re.IGNORECASE)
+    if term:
+        dates['期限/Term'] = term.group(1).strip()
+
     return dates
 
 
+def extract_amounts(text):
+    """Extract monetary amounts."""
+    amounts = []
+
+    # RMB patterns
+    rmb = re.findall(r'(?:人民币|RMB|￥)\s*([\d,，]+(?:\.\d+)?)\s*(?:元|万元)?', text)
+    for amt in rmb[:5]:
+        amounts.append(f"RMB {amt}")
+
+    # USD patterns
+    usd = re.findall(r'(?:USD|\$)\s*([\d,]+(?:\.\d+)?)', text)
+    for amt in usd[:5]:
+        amounts.append(f"USD {amt}")
+
+    return amounts
+
+
 def extract_governing_law(text):
-    """Extract governing law clause."""
+    """Extract governing law."""
     patterns = [
-        r'适用法律[：:]\s*([^\n]+)',
-        r'准据法[：:]\s*([^\n]+)',
-        r'本协议适用([^\n]*?法律)',
-        r'Governing\s+Law[:\s]+([^\n]+)',
-        r'governed\s+by\s+(?:the\s+)?laws?\s+of\s+([^\n,\.]+)',
+        r'(?:适用法律|准据法|Governing Law)[：:]\s*([^\n]+)',
+        r'适用([^\n]*?法律)',
+        r'governed by[^.]*laws? of ([^.\n]+)',
     ]
-    
+
     for pattern in patterns:
         match = re.search(pattern, text, re.IGNORECASE)
         if match:
             return match.group(1).strip()
-    
+
     return None
 
 
-def extract_amounts(text):
-    """Extract key monetary amounts."""
-    amounts = []
-    
-    # RMB patterns
-    rmb_patterns = [
-        r'人民币\s*([\d,，]+(?:\.\d+)?)\s*(?:元|万元)',
-        r'RMB\s*([\d,，]+(?:\.\d+)?)',
-        r'¥\s*([\d,，]+(?:\.\d+)?)',
-    ]
-    
-    # USD patterns
-    usd_patterns = [
-        r'\$\s*([\d,]+(?:\.\d+)?)',
-        r'USD\s*([\d,]+(?:\.\d+)?)',
-    ]
-    
-    for pattern in rmb_patterns + usd_patterns:
-        matches = re.findall(pattern, text)
-        amounts.extend(matches[:5])  # Limit to first 5
-    
-    return amounts
+def extract_dispute_resolution(text):
+    """Extract dispute resolution clause."""
+    if re.search(r'仲裁|arbitration|CIETAC|HKIAC|ICC', text, re.IGNORECASE):
+        # Find arbitration institution
+        inst = re.search(r'(CIETAC|中国国际经济贸易仲裁委员会|HKIAC|香港国际仲裁中心|ICC|新加坡国际仲裁中心|SIAC)', text)
+        if inst:
+            return f"仲裁 ({inst.group(1)})"
+        return "仲裁"
+    elif re.search(r'法院|诉讼|court|litigation|jurisdiction', text, re.IGNORECASE):
+        return "诉讼/法院管辖"
+
+    return None
 
 
-def identify_contract_type(text):
-    """Identify the type of contract based on keywords."""
-    contract_types = {
-        '股东协议': ['股东协议', 'Shareholder Agreement', '股权协议'],
-        '投资协议': ['投资协议', 'Investment Agreement', '融资协议', 'Financing Agreement'],
-        '劳动合同': ['劳动合同', 'Employment Contract', 'Employment Agreement'],
-        '保密协议': ['保密协议', 'Non-Disclosure Agreement', 'NDA', 'Confidentiality Agreement'],
-        '服务协议': ['服务协议', 'Service Agreement', '咨询协议', 'Consulting Agreement'],
-        '采购合同': ['采购合同', 'Purchase Agreement', '买卖合同', 'Sales Contract'],
-        '租赁协议': ['租赁协议', 'Lease Agreement', '租赁合同'],
-        '借款协议': ['借款协议', 'Loan Agreement', '贷款合同'],
+def extract_contract_info(file_path):
+    """Main extraction function."""
+    text = extract_text(file_path)
+
+    info = {
+        'file_name': Path(file_path).name,
+        'file_path': str(Path(file_path).absolute()),
+        'extraction_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'contract_type': identify_contract_type(text),
+        'contract_title': extract_title(text),
+        'parties': extract_parties(text),
+        'dates': extract_dates(text),
+        'amounts': extract_amounts(text),
+        'governing_law': extract_governing_law(text),
+        'dispute_resolution': extract_dispute_resolution(text),
+        'word_count': len(text),
+        'language': 'Chinese' if re.search(r'[\u4e00-\u9fff]', text) else 'English'
     }
-    
-    text_lower = text.lower()
-    
-    for contract_type, keywords in contract_types.items():
-        for keyword in keywords:
-            if keyword.lower() in text_lower:
-                return contract_type
-    
-    return "未分类 / Unclassified"
+
+    return info
 
 
-def extract_key_sections(text):
-    """Extract key section headings from the contract."""
-    sections = []
-    
-    # Common section patterns (both numbered and unnumbered)
-    section_patterns = [
-        r'^(?:第[一二三四五六七八九十百]+条|Article\s+\d+)[：:、\s]+(.+)$',
-        r'^\d+[\.\、]\s*(.+)$',
-        r'^[一二三四五六七八九十]+[\.\、]\s*(.+)$',
+def format_as_text(info):
+    """Format info as plain text."""
+    lines = [
+        "=" * 70,
+        "合同信息提取报告 / Contract Information Extraction Report",
+        "=" * 70,
+        f"\n📄 文件: {info['file_name']}",
+        f"📅 提取时间: {info['extraction_time']}",
+        f"📝 字数: {info['word_count']}",
+        f"🌐 语言: {info['language']}",
+        f"\n📋 合同类型: {info['contract_type']['name_cn']} / {info['contract_type']['name_en']}",
+        f"📑 合同标题: {info['contract_title']}",
     ]
-    
-    lines = text.split('\n')
-    for line in lines:
-        line = line.strip()
-        if len(line) > 5 and len(line) < 100:  # Reasonable section heading length
-            for pattern in section_patterns:
-                match = re.match(pattern, line)
-                if match and not any(char.isdigit() for char in match.group(1)[:5]):
-                    sections.append(match.group(1).strip())
-                    break
-    
-    # Remove duplicates and limit
-    seen = set()
-    unique_sections = []
-    for section in sections:
-        if section not in seen:
-            seen.add(section)
-            unique_sections.append(section)
-    
-    return unique_sections[:20]  # Limit to first 20 sections
 
-
-def format_output(info):
-    """Format extracted information for display."""
-    output = []
-    output.append("=" * 80)
-    output.append("合同信息提取报告 / Contract Information Extraction Report")
-    output.append("=" * 80)
-    output.append(f"\n文件名称 / File Name: {info['file_name']}")
-    output.append(f"提取时间 / Extraction Time: {info['extraction_date']}")
-    output.append(f"\n合同标题 / Contract Title:\n  {info['contract_title']}")
-    output.append(f"\n合同类型 / Contract Type:\n  {info['contract_type']}")
-    
     if info['parties']:
-        output.append(f"\n合同各方 / Parties:")
+        lines.append("\n👥 合同各方:")
         for i, party in enumerate(info['parties'], 1):
-            output.append(f"  {i}. {party}")
-    
+            lines.append(f"   {i}. {party}")
+
     if info['dates']:
-        output.append(f"\n重要日期 / Important Dates:")
+        lines.append("\n📅 重要日期:")
         for key, value in info['dates'].items():
-            output.append(f"  {key}: {value}")
-    
+            lines.append(f"   {key}: {value}")
+
+    if info['amounts']:
+        lines.append("\n💰 金额:")
+        for amt in info['amounts']:
+            lines.append(f"   {amt}")
+
     if info['governing_law']:
-        output.append(f"\n适用法律 / Governing Law:\n  {info['governing_law']}")
-    
-    if info['key_amounts']:
-        output.append(f"\n关键金额 / Key Amounts:")
-        for amount in info['key_amounts']:
-            output.append(f"  {amount}")
-    
-    if info['key_sections']:
-        output.append(f"\n主要章节 / Key Sections:")
-        for i, section in enumerate(info['key_sections'][:10], 1):
-            output.append(f"  {i}. {section}")
-    
-    output.append("\n" + "=" * 80)
-    
-    return '\n'.join(output)
+        lines.append(f"\n⚖️ 适用法律: {info['governing_law']}")
+
+    if info['dispute_resolution']:
+        lines.append(f"🏛️ 争议解决: {info['dispute_resolution']}")
+
+    if info['contract_type'].get('checklist'):
+        lines.append(f"\n📋 建议使用检查清单: {info['contract_type']['checklist']}")
+
+    lines.append("\n" + "=" * 70)
+
+    return '\n'.join(lines)
+
+
+def format_as_markdown(info):
+    """Format info as markdown."""
+    lines = [
+        "# 合同信息提取报告",
+        "",
+        "## 基本信息",
+        "",
+        "| 项目 | 内容 |",
+        "|------|------|",
+        f"| 文件名 | {info['file_name']} |",
+        f"| 提取时间 | {info['extraction_time']} |",
+        f"| 合同类型 | {info['contract_type']['name_cn']} |",
+        f"| 语言 | {info['language']} |",
+        f"| 字数 | {info['word_count']} |",
+        "",
+        f"## 合同标题",
+        "",
+        f"{info['contract_title']}",
+        "",
+    ]
+
+    if info['parties']:
+        lines.extend(["## 合同各方", ""])
+        for i, party in enumerate(info['parties'], 1):
+            lines.append(f"{i}. {party}")
+        lines.append("")
+
+    if info['dates']:
+        lines.extend(["## 重要日期", ""])
+        for key, value in info['dates'].items():
+            lines.append(f"- **{key}**: {value}")
+        lines.append("")
+
+    if info['amounts']:
+        lines.extend(["## 涉及金额", ""])
+        for amt in info['amounts']:
+            lines.append(f"- {amt}")
+        lines.append("")
+
+    if info['governing_law'] or info['dispute_resolution']:
+        lines.extend(["## 法律条款", ""])
+        if info['governing_law']:
+            lines.append(f"- **适用法律**: {info['governing_law']}")
+        if info['dispute_resolution']:
+            lines.append(f"- **争议解决**: {info['dispute_resolution']}")
+        lines.append("")
+
+    return '\n'.join(lines)
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python extract_contract_info.py <contract_file_path>")
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Extract key information from contracts")
+    parser.add_argument("file_path", help="Path to contract file")
+    parser.add_argument("--output", "-o", choices=['json', 'text', 'md'], default='text',
+                        help="Output format (default: text)")
+    parser.add_argument("--save", "-s", help="Save output to file")
+
+    args = parser.parse_args()
+
+    if not os.path.exists(args.file_path):
+        print(f"Error: File not found: {args.file_path}")
         sys.exit(1)
-    
-    file_path = sys.argv[1]
-    
-    if not os.path.exists(file_path):
-        print(f"Error: File not found: {file_path}")
-        sys.exit(1)
-    
-    print("Extracting contract information...")
-    info = extract_contract_info(file_path)
-    
-    output = format_output(info)
+
+    info = extract_contract_info(args.file_path)
+
+    if args.output == 'json':
+        output = json.dumps(info, ensure_ascii=False, indent=2)
+    elif args.output == 'md':
+        output = format_as_markdown(info)
+    else:
+        output = format_as_text(info)
+
     print(output)
-    
-    # Optionally save to file
-    output_file = Path(file_path).stem + "_extracted_info.txt"
-    with open(output_file, 'w', encoding='utf-8') as f:
-        f.write(output)
-    print(f"\nReport saved to: {output_file}")
+
+    if args.save:
+        with open(args.save, 'w', encoding='utf-8') as f:
+            f.write(output)
+        print(f"\n✅ Saved to: {args.save}")
 
 
 if __name__ == '__main__':
