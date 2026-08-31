@@ -34,12 +34,8 @@ git clone https://github.com/lennonli/contract-review.git ~/.agents/skills/contr
 - 命名规则：`合同名称-文件生成日期-ABL-V1`；
 - 签署页单独成页，以分页符与正文分隔。
 
-### 附带脚本（scripts/）
-| 脚本 | 用途 |
-| --- | --- |
-| `read_full_docx.py` | 完整读取 docx 段落与表格文本 |
-| `revise_contract.py` | 以 Word 原生修订痕迹执行查找替换式修订（`--author` 指定修订人） |
-| `compare_versions.py` | 比对两版合同生成差异报告 |
+### Word 文档操作
+不自带脚本。环境中装有 docx 处理 skill（如 document-skills:docx）时优先调用其能力（pandoc `--track-changes=all` 提取文本、解包编辑 OOXML 写入修订痕迹与批注）；无 docx skill 时用 python-docx 直接操作（注意 run 拆分、addprevious 顺序等已知坑位）。修订署名"锦天城-李成"与时间戳分布规则不因工具而豁免。
 
 ## 适用范围
 

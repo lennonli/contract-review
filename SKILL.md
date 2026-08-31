@@ -179,12 +179,15 @@ Word文档修订及批注的时间戳不得为同一时间：应自交付日前 
 
 涉及起草合同、协议、备忘录、法律意见书等文件，涉及签署/签字页的文件，签署页需要单独作为一页，用分页符分开。签署页表述格式：（本页无正文，为《合同名称》签署页），例如合同名称为保密协议，则这样写：（本页无正文，为《保密协议》签署页）
 
-## 三、辅助脚本（scripts/）
+## 三、Word 文档操作方式（不自带脚本）
 
-本 skill 目录下附带以下通用 docx 工具脚本，可在执行上述工作流时调用：
+本 skill 不附带任何脚本；读取与修改 Word 文档按以下优先级执行。前文修订模式的修订人署名与时间戳分布要求，不因所用工具不同而豁免：
 
-1. `scripts/read_full_docx.py` — 完整读取 Word 文档的段落与表格文本：`python3 read_full_docx.py <文件路径>`。审查或修订前必须先完整读取原文件，不得基于摘要或记忆改写。
-2. `scripts/revise_contract.py` — 以 Word 原生修订痕迹（w:ins/w:del）执行查找替换式修订：`python3 revise_contract.py <input.docx> --revisions "原句|改后;;原句2|改后2" --author "锦天城-李成" --output <output.docx>`。注意：脚本写入的修订时间默认为当前时间，不满足上文“20–200 秒随机间隔递增分布”要求的，生成后须按规则后处理各 w:ins/w:del 的 w:date 属性，并保证修订时间不早于收到文件的时间、与文档最后修改时间自洽。
-3. `scripts/compare_versions.py` — 比对两版合同并生成差异报告：`python3 compare_versions.py version1.docx version2.docx`。
-
-脚本仅为辅助工具；修订内容取舍、风险判断与交付质量仍以本文工作流为准。
+1. 环境中装有 docx 处理 skill（如 document-skills:docx 或本地 docx skill）的，优先调用其能力：
+   - 读取：`pandoc --track-changes=all 文件.docx -o 提取.md`，可连同既有修订痕迹一并提取；审查或修订前必须先完整读取原文件，不得基于摘要或记忆改写；
+   - 修订与批注：按该 skill 的“解包 → 编辑 XML → 重新打包”流程写入 w:ins/w:del/w:comment，修订作者统一设为“锦天城-李成”；
+2. 无 docx skill 可用的，用 python-docx 直接操作 OOXML，并注意以下已知坑位：
+   - Word/WPS 常将同一段文本拆分到多个 run，整段字符串直接匹配会失败，须按 run 合并后再匹配；
+   - python-docx 用 addprevious 插入多段会导致顺序反转，插入后须回读复验；
+   - 修订及批注的 w:date 须按上文“20–200 秒随机间隔递增分布”逐条设置，不得全部相同；
+3. 版本比对：用 pandoc 分别提取两版文本后逐条 diff，版面问题用 LibreOffice 转 PDF 后复核。
